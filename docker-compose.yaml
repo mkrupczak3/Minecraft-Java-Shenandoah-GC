@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+
+  minecraft-server:
+    ports:
+      - "25565:25565"
+
+    environment:
+      EULA: "TRUE"
+      # # OLD Safer opts
+      # JVM_XX_OPTS: "-server -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSIncrementalPacing -XX:ParallelGCThreads=2 -XX:+AggressiveOpts"
+      
+      # Matt's wacky new opts:
+      # JVM_XX_OPTS: "-server -Xms4G -Xmx4G -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:GCTimeRatio=99 -XX:MaxTenuringThreshold=4 -XX:G1NewSizePercent=60 -XX:InitiatingHeapOccupancyPercent=90 -XX:G1MixedGCLiveThresholdPercent=95 -XX:G1ReservePercent=5 -XX:G1MixedGCCountTarget=8 -XX:G1OldCSetRegionThresholdPercent=5 -XX:MaxGCPauseMillis=25 -XX:G1HeapRegionSize=32M -XX:G1ConcRefinementThreads=4 -XX:ParallelGCThreads=8 -XX:G1HeapWastePercent=70 -XX:+ParallelRefProcEnabled -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+AggressiveOpts"
+      
+      # Better shenandoahGC:
+      JVM_XX_OPTS: "-server -XX:+UnlockExperimentalVMOptions -XX:+UseShenandoahGC"
+
+      MEMORY: "3G"
+
+    image: itzg/minecraft-server:openj9
+      
+    container_name: mc
+    
+    tty: true
+    stdin_open: true
+    restart: always
+    
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /minecraft:/data
