@@ -19,6 +19,8 @@ services:
 
       MEMORY: "3G"
 
+    # ShenandoahGC is only available with Open JRE, not Oracle JRE
+    #     If using Oracle JRE, use ZGC instead
     image: itzg/minecraft-server:openj9
       
     container_name: mc
